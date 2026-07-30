@@ -1,52 +1,52 @@
 package KMA.SmartEdu.core.common;
 
 import KMA.SmartEdu.core.exception.ErrorCode;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @Builder
 public class ApiResponse<T> {
     private boolean success;
-    private int code;
+    private Integer code; // null khi success — chỉ có giá trị khi lỗi
     private String message;
-    private T data;
+    private T data; // null khi lỗi
+    private List<FieldErrorDetail> errors; // null khi success — lỗi validation
+    private String path; // null khi success — đường dẫn của request
 
-    // Success có data
+    @Builder.Default
+    private LocalDateTime timestamp = LocalDateTime.now();
+
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
                 .success(true)
-                .code(200)
                 .message("Success")
                 .data(data)
                 .build();
     }
 
-    // Success không có data
-    public static <T> ApiResponse<T> success(String message) {
-        return ApiResponse.<T>builder()
-                .success(true)
-                .code(200)
-                .message(message)
-                .data(null)
-                .build();
+    public static <T> ApiResponse<T> successWithMessage(String message) {
+        return ApiResponse.<T>builder().success(true).message(message).build();
     }
 
-    // Error — dùng ErrorCode
-    public static <T> ApiResponse<T> error(ErrorCode errorCode) {
+    public static <T> ApiResponse<T> error(ErrorCode errorCode, String path) {
         return ApiResponse.<T>builder()
                 .success(false)
                 .code(errorCode.getCode())
                 .message(errorCode.getMessage())
+                .path(path)
                 .build();
     }
 
-    // Error — custom message
-    public static <T> ApiResponse<T> error(String message) {
+    public static <T> ApiResponse<T> validationError(List<FieldErrorDetail> errors, String path) {
         return ApiResponse.<T>builder()
                 .success(false)
-                .code(ErrorCode.UNEXPECTED_ERROR.getCode())
-                .message(message)
+                .code(ErrorCode.VALIDATION_ERROR.getCode())
+                .message(ErrorCode.VALIDATION_ERROR.getMessage())
+                .errors(errors)
+                .path(path)
                 .build();
     }
 }

@@ -1,8 +1,7 @@
 package KMA.SmartEdu.core.common;
 
-import lombok.*;
-
 import java.util.List;
+import lombok.*;
 
 @Getter
 @Setter

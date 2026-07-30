@@ -1,6 +1,9 @@
 package KMA.SmartEdu.core.exception;
 
 import KMA.SmartEdu.core.common.ApiResponse;
+import KMA.SmartEdu.core.common.FieldErrorDetail;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,43 +11,47 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.stream.Collectors;
-
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
     // 1. Validation exception
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ApiResponse<Void>> handlingMethodArgumentNotValidException(
+            MethodArgumentNotValidException exception, HttpServletRequest request) {
 
-        String detail = exception.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
-                .collect(Collectors.joining(", "));
+        List<FieldErrorDetail> errors = exception.getBindingResult().getFieldErrors().stream()
+                .map(fe -> new FieldErrorDetail(fe.getField(), fe.getDefaultMessage()))
+                .toList();
 
-        log.warn("Validation failed: {}", detail);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(detail));
+        log.warn("Validation failed at [{}]: {}", request.getRequestURI(), errors);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.validationError(errors, request.getRequestURI()));
     }
 
     // 2. Business exception
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<?> handlingBaseException(BaseException exception) {
+    public ResponseEntity<ApiResponse<Void>> handlingBaseException(
+            BaseException exception, HttpServletRequest request) {
+
         log.error(
-                "Business Exception: code={}, message={}",
+                "Business Exception: code={}, message={}, path={}",
                 exception.getErrorCode().getCode(),
-                exception.getMessage());
+                exception.getMessage(),
+                request.getRequestURI());
 
         return ResponseEntity.status(exception.getErrorCode().getHttpStatus())
-                .body(ApiResponse.error(exception.getErrorCode()));
+                .body(ApiResponse.error(exception.getErrorCode(), request.getRequestURI()));
     }
 
     // 3. Fallback
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handlingRuntimeException(Exception exception) {
+    public ResponseEntity<ApiResponse<Void>> handlingRuntimeException(Exception exception, HttpServletRequest request) {
 
-        log.error("Unexpected Exception: ", exception);
+        log.error("Unexpected Exception at [{}]: ", request.getRequestURI(), exception);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error(ErrorCode.UNEXPECTED_ERROR));
+                .body(ApiResponse.error(ErrorCode.UNEXPECTED_ERROR, request.getRequestURI()));
     }
 }

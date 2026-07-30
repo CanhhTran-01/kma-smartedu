@@ -12,7 +12,7 @@ public class WebCorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**") // 1. Áp dụng CORS cho tất cả các endpoints
                 .allowedOrigins("*") // 2. Chỉ định rõ các domain FE được phép gọi API
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // 3. Các HTTP Method được phép gọi
-                .allowedHeaders("*")  // 4. Cho phép tất cả các header trong request
+                .allowedHeaders("*") // 4. Cho phép tất cả các header trong request
                 .allowCredentials(true) // 5. Cho phép Frontend gửi thông tin xác thực
                 .maxAge(3600); // 6. Time lưu cache cho "Preflight Request"
     }

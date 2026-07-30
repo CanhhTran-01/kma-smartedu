@@ -1,6 +1,6 @@
-package KMA.SmartEdu.response;
+package KMA.SmartEdu.core.common;
 
-import KMA.SmartEdu.exception.ErrorCode;
+import KMA.SmartEdu.core.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Data;
 

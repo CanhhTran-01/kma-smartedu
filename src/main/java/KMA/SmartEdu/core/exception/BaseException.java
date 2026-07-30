@@ -1,4 +1,4 @@
-package KMA.SmartEdu.exception;
+package KMA.SmartEdu.core.exception;
 
 import lombok.Getter;
 

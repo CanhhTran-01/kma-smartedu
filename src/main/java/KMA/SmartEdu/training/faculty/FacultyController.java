@@ -4,6 +4,7 @@ import KMA.SmartEdu.core.common.ApiResponse;
 import KMA.SmartEdu.core.common.PageResponse;
 import KMA.SmartEdu.training.faculty.dto.FacultyRequest;
 import KMA.SmartEdu.training.faculty.dto.FacultyResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,6 @@ public class FacultyController {
 
     // TODO: API thông tin chi tiết của khoa -> mã, các ngành, số lượng học sinh, số giảng viên, ...
     // TODO: API PATH /activate
-    // TODO: Validation Later
 
     @GetMapping // lấy danh sách khoa
     public ResponseEntity<ApiResponse<PageResponse<FacultyResponse>>> getAll(
@@ -31,13 +31,13 @@ public class FacultyController {
     }
 
     @PostMapping // tạo mới khoa
-    public ResponseEntity<ApiResponse<FacultyResponse>> create(@RequestBody FacultyRequest request) {
+    public ResponseEntity<ApiResponse<FacultyResponse>> create(@Valid @RequestBody FacultyRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(facultyService.create(request)));
     }
 
     @PutMapping("/{id}") // update khoa
     public ResponseEntity<ApiResponse<FacultyResponse>> update(
-            @PathVariable Long id, @RequestBody FacultyRequest request) {
+            @PathVariable Long id, @Valid @RequestBody FacultyRequest request) {
         return ResponseEntity.ok(ApiResponse.success(facultyService.update(id, request)));
     }
 

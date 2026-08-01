@@ -18,7 +18,7 @@ public class Faculty extends BaseEntity {
     @Column(name = "faculty_name", nullable = false, length = 200)
     private String facultyName;
 
-    @Column(name = "description", length = 500)
+    @Column(name = "description", length = 1000)
     private String description;
 
     @Column(name = "is_active", nullable = false)

@@ -11,6 +11,7 @@ public enum ErrorCode {
     // ======= 1xxx - General Errors
     UNEXPECTED_ERROR(1000, "Lỗi hệ thống", HttpStatus.INTERNAL_SERVER_ERROR),
     VALIDATION_ERROR(1001, "Dữ liệu đầu vào không hợp lệ", HttpStatus.BAD_REQUEST),
+    MISSING_PARAMETER(1002, "Thiếu tham số bắt buộc", HttpStatus.BAD_REQUEST),
 
     // ======= 2xxx - Business Logic Error
     // == FACULTY

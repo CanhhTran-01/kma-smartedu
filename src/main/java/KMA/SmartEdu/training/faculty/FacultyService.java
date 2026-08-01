@@ -102,6 +102,7 @@ public class FacultyService {
             throw new BaseException(ErrorCode.FACULTY_ID_NOT_MATCHES_CODE);
         }
 
+        // check khoa faculty có đang có majors không
         if (majorRepository.existsByFacultyId(id)) {
             throw new BaseException(ErrorCode.FACULTY_HAS_MAJORS);
         }

@@ -33,7 +33,7 @@ public class FacultyIntegrationTest {
 
     @Container
     @ServiceConnection // Spring Boot tự động nhận diện và tiêm URL, User, Pass vào Datasource
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:18");
 
     @Autowired
     private MockMvc mockMvc;

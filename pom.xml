@@ -171,6 +171,16 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- 4. Đặt Timezone đúng với Postgres18 dành cho môi trường Test -->
+			<!-- Môi trường local/dev thật: TimeZone.setDefault(TimeZone.getTimeZone("UTC")) trong main()-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Duser.timezone=UTC</argLine>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

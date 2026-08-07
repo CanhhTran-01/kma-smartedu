@@ -19,11 +19,15 @@ public class Major extends BaseEntity {
     private Faculty faculty;
 
     @Column(name = "major_code", nullable = false, unique = true, length = 20)
-    private String majorCode;
+    private String majorCode; // mỗi major phải có 1 majorCode duy nhất toàn hệ thống
 
     @Column(name = "major_name", nullable = false, length = 200)
     private String majorName;
 
-    @Column(name = "description", length = 500)
+    @Column(name = "description", length = 1000)
     private String description;
+
+    @Column(name = "is_active", nullable = false)
+    @Builder.Default
+    private Boolean active = true;
 }

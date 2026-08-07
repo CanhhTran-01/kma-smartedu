@@ -6,6 +6,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "faculty")
+@Builder
 @Setter
 @Getter
 @NoArgsConstructor
@@ -22,5 +23,6 @@ public class Faculty extends BaseEntity {
     private String description;
 
     @Column(name = "is_active", nullable = false)
+    @Builder.Default
     private Boolean active = true;
 }

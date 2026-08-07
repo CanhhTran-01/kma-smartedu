@@ -1,38 +1,46 @@
 -- ==========================================
--- 1. TẠO CÁC BẢNG (TABLES)
+-- TẠO CÁC BẢNG (TABLES)
 -- ==========================================
 
 -- Tạo bảng faculty (Kế thừa các trường từ BaseEntity)[cite: 1]
 CREATE TABLE faculty (
-                         id BIGSERIAL PRIMARY KEY,
-                         created_at TIMESTAMP,
-                         updated_at TIMESTAMP,
-                         created_by VARCHAR(255),
-                         updated_by VARCHAR(255),
-                         is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-                         faculty_code VARCHAR(20) NOT NULL UNIQUE,
-                         faculty_name VARCHAR(200) NOT NULL,
-                         description VARCHAR(1000),
-                         is_active BOOLEAN NOT NULL DEFAULT TRUE
+    -- Base
+    id BIGSERIAL PRIMARY KEY,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    created_by VARCHAR(255),
+    updated_by VARCHAR(255),
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+
+    -- Faculty
+    faculty_code VARCHAR(20) NOT NULL UNIQUE,
+    faculty_name VARCHAR(200) NOT NULL,
+    description VARCHAR(1000),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
--- Tạo bảng major (Có khóa ngoại liên kết với faculty)[cite: 1]
+-- Tạo bảng major (Có khóa ngoại liên kết với faculty)
 CREATE TABLE major (
-                       id BIGSERIAL PRIMARY KEY,
-                       created_at TIMESTAMP,
-                       updated_at TIMESTAMP,
-                       created_by VARCHAR(255),
-                       updated_by VARCHAR(255),
-                       is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
-                       faculty_id BIGINT NOT NULL,
-                       major_code VARCHAR(20) NOT NULL UNIQUE,
-                       major_name VARCHAR(200) NOT NULL,
-                       description VARCHAR(500),
-                       CONSTRAINT fk_major_faculty FOREIGN KEY (faculty_id) REFERENCES faculty(id)
+    -- Base
+    id BIGSERIAL PRIMARY KEY,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    created_by VARCHAR(255),
+    updated_by VARCHAR(255),
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+
+    -- Major
+    major_code VARCHAR(20) NOT NULL UNIQUE,
+    major_name VARCHAR(200) NOT NULL,
+    description VARCHAR(1000),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+
+    faculty_id BIGINT NOT NULL,
+    CONSTRAINT fk_major_faculty FOREIGN KEY (faculty_id) REFERENCES faculty(id)
 );
 
 -- ==========================================
--- 2. INSERT DỮ LIỆU MẪU (FACULTIES)
+-- INSERT DỮ LIỆU MẪU (FACULTIES)
 -- ==========================================
 INSERT INTO faculty (faculty_code, faculty_name, description, created_at, created_by)
 VALUES
@@ -58,7 +66,7 @@ VALUES
 ('AI', 'Trí tuệ nhân tạo', 'Đào tạo kỹ sư chuyên ngành Trí tuệ nhân tạo và Dữ liệu', CURRENT_TIMESTAMP, 'system_setup');
 
 -- ==========================================
--- 3. INSERT DỮ LIỆU MẪU (MAJORS)
+-- INSERT DỮ LIỆU MẪU (MAJORS)
 -- ==========================================
 INSERT INTO major (faculty_id, major_code, major_name, description, created_at, created_by)
 VALUES

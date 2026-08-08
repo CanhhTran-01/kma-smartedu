@@ -104,6 +104,8 @@ class FacultyServiceTest {
         assertThatThrownBy(() -> facultyService.update(1L, request))
                 .isInstanceOf(BaseException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.FACULTY_NOT_FOUND);
+
+        verify(facultyMapper, never()).updateEntityFromRequest(any(), any());
     }
 
     @Test

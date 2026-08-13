@@ -8,12 +8,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    // 0. Thiếu tham số cho URL
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiResponse<Void>> handlingMissingServletRequestParameterException(
+            MissingServletRequestParameterException exception, HttpServletRequest request) {
+
+        log.warn("Missing parameter at [{}]: {}", request.getRequestURI(), exception.getMessage());
+
+        return ResponseEntity.status(ErrorCode.MISSING_PARAMETER.getHttpStatus())
+                .body(ApiResponse.error(ErrorCode.MISSING_PARAMETER, request.getRequestURI()));
+    }
 
     // 1. Validation exception
     @ExceptionHandler(MethodArgumentNotValidException.class)

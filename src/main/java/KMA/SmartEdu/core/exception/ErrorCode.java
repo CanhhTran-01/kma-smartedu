@@ -24,6 +24,18 @@ public enum ErrorCode {
     FACULTY_HAS_MAJORS(2003, "Không thể xóa Khoa vì vẫn còn Ngành", HttpStatus.CONFLICT),
     FACULTY_CODE_DUPLICATED(2004, "Mã Khoa đã tồn tại", HttpStatus.CONFLICT),
 
+    // ======= 3xxx - External Service Errors
+    // ----------- INTERNSHIP PERIOD : 22xx
+    INTERNSHIP_PERIOD_NOT_FOUND(2200, "Không tìm thấy Đợt thực tập", HttpStatus.NOT_FOUND),
+    INTERNSHIP_PERIOD_NAME_DUPLICATED(2201, "Tên Đợt thực tập đã tồn tại", HttpStatus.CONFLICT),
+    INTERNSHIP_PERIOD_ID_NOT_MATCHES_NAME(2202, "Tên xác nhận không khớp với Đợt thực tập", HttpStatus.BAD_REQUEST),
+    INTERNSHIP_PERIOD_DATE_INVALID(2203, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc", HttpStatus.BAD_REQUEST),
+    INTERNSHIP_PERIOD_REGISTRATION_DEADLINE_INVALID(
+            2204, "Hạn đăng ký phải trước hoặc bằng ngày bắt đầu", HttpStatus.BAD_REQUEST),
+    // =====================================
+    // 4xxx - Authentication & Authorization Errors
+    // =====================================
+    // ======= 4xxx - Authentication & Authorization Errors
     // ----------- MAJOR : 21xx
     MAJOR_NOT_FOUND(2100, "Không tìm thấy Ngành", HttpStatus.NOT_FOUND),
     MAJOR_CODE_DUPLICATED(2101, "Mã Ngành đã tồn tại", HttpStatus.CONFLICT),

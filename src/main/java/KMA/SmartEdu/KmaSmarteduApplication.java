@@ -10,9 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class KmaSmarteduApplication {
 
     public static void main(String[] args) {
-        // Đồng bộ timezone của JVM với DB/test để tránh lệch timestamp giữa app, Hibernate và PostgreSQL.
-        // Nếu bỏ dòng này, createdAt/updatedAt có thể bị lệch giờ giữa local, test và dữ liệu lưu trong DB.
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC")); // ép JVM đổi lại Timezone tương ứng PostgresQL 18
         SpringApplication.run(KmaSmarteduApplication.class, args);
     }
 }

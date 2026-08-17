@@ -1,6 +1,7 @@
 package KMA.SmartEdu.core.common;
 
 import KMA.SmartEdu.core.exception.ErrorCode;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
     private boolean success;
     private Integer code; // null khi success — chỉ có giá trị khi lỗi
